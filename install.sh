@@ -23,5 +23,5 @@ echo "# gitkit"                >> $PROFILE_PATH
 echo ". ~/.profile--gitkit.sh" >> $PROFILE_PATH
 
 echo "Gitkit installed to ~/.profile--gitkit.sh"
-echo "- start a new terminal session, then run `gts` :)"
+echo "- start a new terminal session, then run 'gts' :)"
 echo
