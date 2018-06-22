@@ -11,15 +11,17 @@ gitkit is a fairly minimal set of git bash aliases & functions, to help ease the
 
 ## Installation
 
+Just run `gitkit/install.sh`:
+
 ```bash
-bash gitkit/install.sh
+bash install.sh
 ```
 
 Or:
 
 ```bash
-bash gitkit/install.sh ~/.profile   # Supply your bash profile file path
-                                    # for unattended install
+bash install.sh ~/.profile   # Specify your bash profile file path up-front
+                             # (unattended install)
 ```
 
 
