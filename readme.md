@@ -260,6 +260,16 @@ If you are sure you want to delete it, run 'git branch -D temp--orphan-scraper'.
 ```
 
 
+### gbm — git branch -m
+
+Rename the current branch.
+
+```bash
+$ gch temp-branch
+$ gbm my-feature
+```
+
+
 ### gtt — fancy git log
 
 `gtt` shows what I call ‘traintracks view’:

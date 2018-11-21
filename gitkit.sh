@@ -103,6 +103,11 @@ gDall() {
 }
 
 
+# branch rename
+
+alias gbm="git branch -m"
+
+
 # train-tracks view
 
 alias gtts="git log --oneline --graph --decorate --abbrev-commit --color"
