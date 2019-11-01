@@ -77,6 +77,7 @@ function gh() {
 
 alias gf="git fetch --all --prune"
 alias gtp="git pull"
+alias gtpr="git pull --recurse-submodules"
 
 
 # add & commit
