@@ -45,6 +45,7 @@ alias gts="git status"
 # checkout
 
 alias gch="git checkout"
+alias gchr="git checkout --recurse-submodules"
 alias gchi="gch integration"
 alias gchm="gch master"
 
