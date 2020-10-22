@@ -37,6 +37,12 @@ gcount() {
 }
 
 
+# clone
+
+alias gc="git clone"
+alias gcr="git clone --recurse-submodules"
+
+
 # status
 
 alias gts="git status"
