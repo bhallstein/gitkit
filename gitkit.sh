@@ -130,6 +130,7 @@ alias gpohu="git push -u origin HEAD"
 
 # rebasing
 
+alias gr="git rebase --onto"
 alias gri="git rebase --onto integration"
 alias grc="git rebase --continue"
 
