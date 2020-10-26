@@ -1,6 +1,6 @@
 # gitkit ⚡️
 
-gitkit is a fairly minimal set of git bash aliases & functions, to help ease the pain of git's incredibly verbose [command line interface](http://stevelosh.com/blog/2013/04/git-koans/), and make you fly around in git like a bat on steroids. 🦇
+gitkit is a fairly minimal set of git bash aliases & functions, to help ease the pain of git's incredibly verbose [command line interface](http://stevelosh.com/blog/2013/04/git-koans/), and help you fly around in git like a bat on steroids. 🦇
 
 
 ## Contents
@@ -127,22 +127,7 @@ M   index.js
 ```
 
 
-### gh: show what changed in a commit
-
-With no arguments: show changes made in the HEAD commit:
-
-```bash
-$ gh
---- a/classes/utils/numbers.php
-+++ b/classes/utils/numbers.php
-@@ -137,3 +137,16 @@
-  function nine() {
--    return 8;
-+    return 9;
-  }
-```
-
-With commit argument: show changes made in the specified commit:
+### gh: diff an specified commit with its parent
 
 ```bash
 $ gh c1bf9dff9
@@ -154,6 +139,8 @@ $ gh c1bf9dff9
 +    return 'b';
   }
 ```
+
+Calling `gh` with no argument is equivalent to writing `gh HEAD`.
 
 
 ### gad & gcom — git add & git commit
