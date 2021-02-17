@@ -100,6 +100,11 @@ gcom() {
 alias gm="git merge --no-ff --no-commit"
 
 
+# branch list
+
+alias gb="git branch --all"
+
+
 # branch deletion
 
 alias gD="git branch -D"

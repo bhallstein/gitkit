@@ -221,6 +221,15 @@ $ gcom Merge
 ```
 
 
+### gb — git branch --all
+
+List all branches.
+```bash
+$ gb
+$ gb | grep hotfix
+```
+
+
 ### gD — git branch -D
 
 Delete branches. The D is capitalised to avoid accidental usage.
