@@ -1,6 +1,6 @@
 # gitkit ⚡️
 
-gitkit is a fairly minimal set of git bash aliases & functions, to help ease the pain of git's incredibly verbose [command line interface](http://stevelosh.com/blog/2013/04/git-koans/), and help you fly around in git like a bat on steroids. 🦇
+gitkit is a small ’n simple set of git bash aliases & functions, to help ease the pain of git's rather [verbose command line interface](http://stevelosh.com/blog/2013/04/git-koans/), to let you fly around in git like a bat on steroids. 🦇
 
 
 ## Contents
@@ -11,21 +11,18 @@ gitkit is a fairly minimal set of git bash aliases & functions, to help ease the
 
 ## Installation
 
-Just run `gitkit/install.sh`:
-
 ```bash
 bash install.sh
 ```
 
-Or:
+Or for unattended install:
 
 ```bash
 bash install.sh ~/.profile   # Specify your bash profile file path up-front
-                             # (unattended install)
 ```
 
 
-## Usage
+## Commands
 
 ### gts: git status
 
@@ -49,7 +46,7 @@ Changes not staged for commit:
 
 ```bash
 $ gch my-branch
-Switched to branch 'temp--orphan-scraper'
+Switched to branch 'my-branch'
 ```
 
 ```bash
@@ -57,7 +54,7 @@ $ gch .            # Discard all unstaged changes since parent commit
 $ gch -- index.js  # Discard changes to index.js since parent commit
 ```
 
-`gch` has variants for a couple of common branch names:
+`gch` has two variants for common branch names `integration` and `master`:
 
 ```bash
 $ gchi
@@ -81,15 +78,15 @@ $ gf
 Fetching origin...
 From github.com:<x>
    c7982c0d3..c3dbd0648  integration -> origin/integration
- * [new branch]          custom-cta  -> origin/custom-cta
+ * [new branch]          my-branch   -> origin/my-branch
 ```
 
 ```bash
 $ gtp
 Updating c7982c0d3..c3dbd0648
 Fast-forward
- src/blog/blog.js                       |  3 ++-
- src/content/partials/header.js         | 12 ++++++++++++------
+ src/blog.js                    |  3 ++-
+ src/header.js                  | 12 ++++++++++++------
 ```
 
 
@@ -101,28 +98,27 @@ $ gtl
 +++ b/src/index.js
 @@ -2,3 +2,4 @@
 
-+import './module-2';
++import './math';
 ```
 
-`gtl` has variants for showing only cached changes (`git diff --cached`) or file names:
+`gtl` has variants for showing only cached changes (`git diff --cached`):
 
 ```bash
 $ gtlc
-diff --git a/index.php b/index.php
+diff --git a/index.js b/index.js
 index 348ab52..d528d10 100644
---- a/index.php
-+++ b/index.php
+--- a/index.js
++++ b/index.js
 @@ -20,6 +20,13 @@
-
-+  function func() {
-+    return function() { };
-+  }
-+
+-  const animation_speed = 10;
++  const animation_speed = 20;
 ```
+
+And file status changes: (`git diff --name-status`):
 
 ```bash
 $ gtln
-D   assets/lightbulb.svg
+D   assets/settings.svg
 M   index.js
 ```
 
@@ -131,23 +127,21 @@ M   index.js
 
 ```bash
 $ gh c1bf9dff9
---- a/classes/utils/letters.php
-+++ b/classes/utils/letters.php
+--- a/alphabet.js
++++ b/alphabet.js
 @@ -137,3 +137,16 @@
-  function letter_b() {
+  function b() {
 -    return 'c';
 +    return 'b';
   }
 ```
 
-Calling `gh` with no argument is equivalent to writing `gh HEAD`.
+When called with no argument, `gh` diffs HEAD with HEAD^.
 
 
 ### gad & gcom — git add & git commit
 
-With `git add`, you usually want `-u` to include file deletions, and you usually want to add everything under the current directory, so that's what `gad` does.
-
-It calls `gts` afterwards, so you can see what you've staged, helping to prevent commit errors.
+`gad` adds everything under the current directory, and uses `-u` to include file deletions. It calls `gts` afterwards, to show you what you've got staged.
 
 ```bash
 $ gad
@@ -157,10 +151,10 @@ Your branch is up to date with 'origin/integration'.
 Changes to be committed:
   (use "git reset HEAD <file>..." to unstage)
 
-  modified:   index.php
+  modified:   index.js
 ```
 
-`gadn` is a variant that uses `-N`, to add previously untracked files to the index without staging them:
+`gadn` includes `-N` and adds new files to the index but doesn't stage them:
 
 ```bash
 $ touch file.js
@@ -178,13 +172,13 @@ Changes not staged for commit:
 `gcom` takes the commit message as the full string of its arguments:
 
 ```bash
-$ gcom add file.js
-[integration 34df9305d] add file.js
+$ gcom add a new file
+[integration 34df9305d] add a new file
  1 file changed, 0 insertions(+), 0 deletions(-)
  create mode 100644 x.js
 ```
 
-Be careful to use quotes if you include special characters like `&` in your commit message:
+Make sure to use quotes if your commit message includes special characters like `&`:
 
 ```bash
 $ gcom 'add new.js & delete old.js'
@@ -193,7 +187,9 @@ $ gcom 'add new.js & delete old.js'
 
 ### gm — git merge
 
-Always merge in two stages. `gm` includes `--no-ff --no-commit`:
+`gm` includes `--no-ff --no-commit`.
+
+You should always merge in two stages: `gm`, then `gcom`.
 
 ```bash
 $ gchi
@@ -214,8 +210,8 @@ Changes to be committed:
 
   modified:   classes/utils/text.php
 
-$ gcom Merge
-[integration 311d38891] Merge
+$ gcom merge branch text-util-update
+[integration 311d38891] merge branch text-util-update
 
 👍
 ```
@@ -239,20 +235,20 @@ $ gD my-branch
 Deleted branch my-branch (was c3dbd0648).
 ```
 
-`gD` has a variant to delete all local branches that are 'merged' from the point of view of HEAD:
+`gDmerged` is a variant to delete all local branches that are merged from the point of view of HEAD:
 
 ```bash
 $ gDmerged
 Deleted branch my-branch (was c7982c0d3).
 ```
 
-...and to delete **all unmerged** branches (you could hurt yourself with this, but it will skip unmerged branches, so probably not too badly):
+...and `gDall` deletes **all unmerged** local branches (you could hurt yourself with this, but it will skip unmerged branches without remotes, so probably not too badly):
 
 ```bash
 $ gDall
-Deleted branch core__asset-backend-revisions__scrapers (was 0ca561f41).
-error: The branch 'temp--orphan-scraper' is not fully merged.
-If you are sure you want to delete it, run 'git branch -D temp--orphan-scraper'.
+Deleted branch a-feature (was 0ca561f41).
+error: The branch 'another-feature' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D another-feature'.
 ```
 
 
@@ -268,7 +264,7 @@ $ gbm my-feature
 
 ### gtt — fancy git log
 
-`gtt` shows what I call ‘traintracks view’:
+`gtt` displays ‘traintracks view’:
 
 ```bash
 $ gtt
@@ -287,19 +283,19 @@ $ gtt
 ...
 ```
 
-`gtts` (for ‘single’) is a variant that doesn’t show unmerged branches.
+`gtts` (for ‘single’) is a variant that only includes the history that has been merged into HEAD.
 
 
 ### gpoh — git push origin HEAD
 
-The fastest way to push your work.
+The fastest way to push.
 
 ```bash
 $ gpoh
 Counting objects: 2, done.
 ...
-To github.com:BrandwatchLtd/brandwatch.com.git
-   c3dbd0648..b8b86da89  HEAD -> temp
+To github.com:bhallstein/gitkit.git
+   c3dbd0648..b8b86da89  HEAD -> my-branch
 ```
 
 `gpohu` is a variant that sets the upstream tracking reference. It's often a good idea to use `gpohu` when pushing a newly created branch:
@@ -309,35 +305,37 @@ $ gch -b my-branch
 Switched to a new branch 'my-branch'
 
 $ gpohu
-To github.com:BrandwatchLtd/brandwatch.com.git
+To github.com:bhallstein/gitkit.git
  * [new branch]          HEAD -> my-branch
 Branch 'my-branch' set up to track remote branch 'my-branch' from 'origin'.
 ```
 
 
-### gri & grc — git rebase
+### gr, gri, grc — git rebase
 
-For the advanced rebaser.
+For the rebaser.
 
-`gri <commit> <branch>` rebases everything from `commit` up to the HEAD of `branch` onto `integration` — `commit` should be the first ancestor of `branch` that does not contain any changes in `branch`.
+`gr <a> <b> <c>` rebases commits ranging [b to c] onto a. (`git rebase --onto a b c`).
 
-i.e. it runs `git rebase --onto integration <commit> <branch>`
+`gri <b> <c>` rebases commits ranging [b to c] onto integration. (`gr integration b c`).
 
 ```bash
-$ gri c7982c0d3 temp-text-helper-improvements
+$ gr origin/utils c3dbd0648 text-utils
 First, rewinding head to replay your work on top of it...
 Applying: initial work
+...
 ```
 
-Run `grc` when you've fixed conflicts, it simply calls `git rebase --continue`.
+`grc` calls `git rebase --continue`, for when you have finished fixing conflicts during a rebase.
 
 
 ### gcl — git clean -fd
 
-Removes untracked files. You could lose work if you meant to `gadn` and `gcom` those files.
+Removes untracked files. (Note: you could lose work if you meant to `gcom` those files!)
 
 ```
-$ touch a-file
+$ touch my-file
 $ gcl
-Removing a-file
+Removing my-file
 ```
+
