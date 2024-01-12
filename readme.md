@@ -317,7 +317,7 @@ For the rebaser.
 
 `gr <a> <b> <c>` rebases commits ranging [b to c] onto a. (`git rebase --onto a b c`).
 
-`gri <b> <c>` rebases commits ranging [b to c] onto integration. (`gr integration b c`).
+`gri <a> <b> <c>` as `gr`, but with --interactive
 
 ```bash
 $ gr origin/utils c3dbd0648 text-utils
