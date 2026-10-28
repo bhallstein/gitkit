@@ -4,13 +4,13 @@
 #         bash install.sh ~/.profile   # install to the provided bash profile
 
 set -e
-cd $(dirname "$0")
+cd "$(dirname "$0")"
 
 echo '//////////////////////////////////////////'
 echo '  ___  _  _    _    _  _   '
 echo ' / __|(_)| |_ | |__(_)| |_ '
 echo '| (_ || ||  _|| / /| ||  _|'
-echo ' \___||_| \__||_\_\|_| \__|   0.1'
+echo ' \___||_| \__||_\_\|_| \__|   0.2'
 echo
 
 if [ "$#" -eq 1 ]; then
@@ -21,17 +21,20 @@ else
   if [ -z "$PROFILE_PATH" ]; then PROFILE_PATH='~/.profile'; fi
 fi
 
-PROFILE_PATH=${PROFILE_PATH/\~/$HOME}
+PROFILE_PATH="${PROFILE_PATH/\~/$HOME}"  # Expand ~ if it was used
 
+cp gitkit.sh ~/.gitkit.sh
 
-cp gitkit.sh ~/.profile--gitkit.sh
-sed -i -E 's/.*gitkit.*//' $PROFILE_PATH
-echo                           >> $PROFILE_PATH
-echo "# gitkit"                >> $PROFILE_PATH
-echo ". ~/.profile--gitkit.sh" >> $PROFILE_PATH
+TMP_FILE="${PROFILE_PATH}.tmp"
+sed '/gitkit/d' "$PROFILE_PATH" > "$TMP_FILE"
+cat "$TMP_FILE" > "$PROFILE_PATH"
+rm "$TMP_FILE"
 
-echo "- installed to ~/.profile--gitkit.sh"
-echo "- invoked from $PROFILE_PATH"
-echo "- start a new terminal session, then run 'gts' :)"
+echo "# gitkit"                >> "$PROFILE_PATH"  # NB redirection follows symlinks
+echo ". ~/.gitkit.sh"          >> "$PROFILE_PATH"
+
+echo "installed to ~/.gitkit.sh"
+echo "invoked from $PROFILE_PATH"
+echo "start a new terminal session, then run 'gts' :)"
 echo
 echo '//////////////////////////////////////////'

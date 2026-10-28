@@ -333,9 +333,16 @@ Applying: initial work
 
 Removes untracked files. (Note: you could lose work if you meant to `gcom` those files!)
 
-```
+```bash
 $ touch my-file
 $ gcl
 Removing my-file
 ```
 
+
+### watch commands with 'viddy'
+
+These commands require [viddy](https://github.com/sachaos/viddy) to be installed:
+
+`wst` run `git status` every 2s
+`wdf` run `git diff` every 2s

@@ -5,35 +5,43 @@
 # gcount - count lines added & removed in a diff
 
 gcount() {
-  ruby -e \
-    '
-      added = 0
-      removed = 0
-      str = ARGF.read
-      str.split("\n").each do |l|
-        if (/^\+{3}/.match(l) || /^-{3}/.match(l))
-          ;
-        elsif (/^\+[^+]*/.match(l))
-          added += 1
-        elsif (/^-[^-]*/.match(l))
-          removed += 1
-        end
-      end
-      if (added == 0 and removed == 0)
-        puts "            Σ: 0"
-      else
-        diff = added - removed
-        if (diff > 0)
-          diffstr = "+" + diff.to_s
-        else
-          diffstr = diff.to_s
-        end
-        puts "    Lines added: " + added.to_s
-        puts "  Lines removed: " + removed.to_s
-        puts "              Σ: " + (added + removed).to_s
-        puts "              ∂: " + diffstr.to_s
-      end
-    '
+  local added=0
+  local removed=0
+  local diff=0
+  local diffstr=""
+
+  # Read standard input line by line
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    case "$line" in
+      +++*|---*)
+        # Ignore diff header lines
+        ;;
+      +*)
+        ((added++))
+        ;;
+      -*)
+        ((removed++))
+        ;;
+    esac
+  done
+
+  # Print results
+  if (( added == 0 && removed == 0 )); then
+    echo "            Σ: 0"
+  else
+    diff=$(( added - removed ))
+
+    if (( diff > 0 )); then
+      diffstr="+$diff"
+    else
+      diffstr="$diff"
+    fi
+
+    printf "    Lines added: %d\n" "$added"
+    printf "  Lines removed: %d\n" "$removed"
+    printf "              Σ: %d\n" "$(( added + removed ))"
+    printf "              ∂: %s\n" "$diffstr"
+  fi
 }
 
 
@@ -144,6 +152,11 @@ alias grc="git rebase --continue"
 
 alias gcl="git clean -fd"
 
+
+# watch commands with viddy
+
+alias wst="viddy --disable_auto_save -n 2 git -c color.status=always status"
+alias wdf="viddy --disable_auto_save -n 2 git diff --color=always"
 
 # GIT_EXCLUDE=(':!modules/*/dist/*' ':!modules/*/src/js/styleVar*' ':!build')
 # gtlm() {
